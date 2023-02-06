@@ -3,6 +3,7 @@ package com.Ako.tinnews.network;
 
 
 
+import com.Ako.tinnews.BuildConfig;
 import com.Ako.tinnews.R;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class RetrofitClient {
 
 
     // Assign your API key here
-    private static final String API_Key = "";
+    private static final String API_Key = BuildConfig.API_KEY;
     private static final String BASE_URL = "https://newsapi.org/v2/";
 
     public static Retrofit newInstance(){
