@@ -3,12 +3,19 @@ package com.Ako.tinnews.ui.search;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.Ako.tinnews.R;
+import com.Ako.tinnews.repository.NewsRepository;
+import com.Ako.tinnews.repository.NewsViewModelFactory;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +23,8 @@ import com.Ako.tinnews.R;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
+
+    private SearchViewModel viewModel;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +71,23 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        NewsRepository repository = new NewsRepository();
+        viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(SearchViewModel.class);
+        viewModel
+                .searchNews()
+                .observe(
+                        getViewLifecycleOwner(),
+                        newsResponse -> {
+                            if(newsResponse != null){
+                                Log.d("SearchFragment", newsResponse.toString());
+                            }
+                        }
+                );
     }
 }
