@@ -153,6 +153,8 @@ public class HomeFragment extends Fragment implements CardStackListener {
     public void onCardSwiped(Direction direction) {
         if(direction == Direction.Right){
             Log.d("CardStackView", "onCardSwiped: like " + cardStackLayoutManager.getTopPosition());
+            Article article = articles.get(cardStackLayoutManager.getTopPosition() - 1);
+            viewModel.setFavoriteArticleInput(article);
         }else if(direction == Direction.Left){
             Log.d("CardStackView", "onCardSwiped: dislike " + cardStackLayoutManager.getTopPosition());
         }
