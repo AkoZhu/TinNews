@@ -1,5 +1,7 @@
 package com.Ako.tinnews.repository;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -30,7 +32,6 @@ public class NewsRepository {
                             topHeadlinesLiveData.setValue(null);
                         }
                     }
-
                     @Override
                     public void onFailure(Call<NewsResponse> call, Throwable t) {
                         topHeadlinesLiveData.setValue(null);
@@ -46,6 +47,7 @@ public class NewsRepository {
                         new Callback<NewsResponse>(){
                             @Override
                             public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+                                Log.d("SearchViewModel", "onResponse: " + response.body());
                                 if(response.isSuccessful()){
                                     everyThingLiveData.setValue(response.body());
                                 }else{

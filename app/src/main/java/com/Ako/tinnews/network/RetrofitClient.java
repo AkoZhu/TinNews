@@ -3,6 +3,8 @@ package com.Ako.tinnews.network;
 
 
 
+import android.util.Log;
+
 import com.Ako.tinnews.BuildConfig;
 import com.Ako.tinnews.R;
 
@@ -37,7 +39,7 @@ public class RetrofitClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request original = chain.request();
-            Request request = original.newBuilder().header("X-Api-Key", API_Key).build();
+            Request request = original.newBuilder().header("x-api-key", API_Key).build();
             return chain.proceed(request);
         }
     }

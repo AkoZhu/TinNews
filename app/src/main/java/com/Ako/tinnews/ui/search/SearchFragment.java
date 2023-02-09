@@ -2,6 +2,7 @@ package com.Ako.tinnews.ui.search;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.Ako.tinnews.R;
+import com.Ako.tinnews.databinding.FragmentSearchBinding;
 import com.Ako.tinnews.repository.NewsRepository;
 import com.Ako.tinnews.repository.NewsViewModelFactory;
 
@@ -25,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 public class SearchFragment extends Fragment {
 
     private SearchViewModel viewModel;
+    private FragmentSearchBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,15 +73,34 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        //return inflater.inflate(R.layout.fragment_search, container, false);
+        binding = FragmentSearchBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NewsRepository repository = new NewsRepository();
-        viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(SearchViewModel.class);
+        // set on query text listener
+        binding.newsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextSubmit(String query){
+                if(query != null){
+                    viewModel.setSearchInput(query);
+                }
+                // it will close the virtual keyboard.
+                binding.newsSearchView.clearFocus();
+                return true;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText){
+                return false;
+            }
+        });
+
+        NewsRepository newsRepository = new NewsRepository();
+        viewModel = new ViewModelProvider(this, new NewsViewModelFactory(newsRepository)).get(SearchViewModel.class);
         viewModel
                 .searchNews()
                 .observe(
@@ -86,6 +108,8 @@ public class SearchFragment extends Fragment {
                         newsResponse -> {
                             if(newsResponse != null){
                                 Log.d("SearchFragment", newsResponse.toString());
+                            }else{
+                                Log.d("SearchFragment: ", "null");
                             }
                         }
                 );
