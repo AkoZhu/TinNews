@@ -17,7 +17,11 @@ import com.Ako.tinnews.repository.NewsRepository;
 import com.Ako.tinnews.repository.NewsViewModelFactory;
 import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
 import com.yuyakaido.android.cardstackview.CardStackListener;
+import com.yuyakaido.android.cardstackview.Direction;
+import com.yuyakaido.android.cardstackview.Duration;
+import com.yuyakaido.android.cardstackview.RewindAnimationSetting;
 import com.yuyakaido.android.cardstackview.StackFrom;
+import com.yuyakaido.android.cardstackview.SwipeAnimationSetting;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +33,7 @@ import java.util.List;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements CardStackListener {
 
     private HomeViewModel viewModel;
 
@@ -95,10 +99,14 @@ public class HomeFragment extends Fragment {
         // setup card stack view
         CardSwipeAdapter cardSwipeAdapter = new CardSwipeAdapter();
         // use the CardStackLayout
-        cardStackLayoutManager = new CardStackLayoutManager(requireContext());
+        cardStackLayoutManager = new CardStackLayoutManager(requireContext(), this);
         cardStackLayoutManager.setStackFrom(StackFrom.Top);
         binding.homeCardStackView.setLayoutManager(cardStackLayoutManager);
         binding.homeCardStackView.setAdapter(cardSwipeAdapter);
+
+        binding.homeLikeButton.setOnClickListener(v -> swipeCard(Direction.Right));
+        binding.homeDislikeButton.setOnClickListener(v -> swipeCard(Direction.Left));
+        binding.homeRewindButton.setOnClickListener(v -> rewindCard());
 
         NewsRepository repository = new NewsRepository();
         viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(HomeViewModel.class);
@@ -115,5 +123,58 @@ public class HomeFragment extends Fragment {
                             }
                         }
                 );
+    }
+
+
+    private void swipeCard(Direction direction){
+        SwipeAnimationSetting setting = new SwipeAnimationSetting.Builder()
+                .setDirection(direction)
+                .setDuration(Duration.Normal.duration)
+                .build();
+        cardStackLayoutManager.setSwipeAnimationSetting(setting);
+        binding.homeCardStackView.swipe();
+    }
+
+    private void rewindCard(){
+        RewindAnimationSetting setting = new RewindAnimationSetting.Builder()
+                .setDirection(Direction.Bottom)
+                .setDuration(Duration.Normal.duration)
+                .build();
+        cardStackLayoutManager.setRewindAnimationSetting(setting);
+        binding.homeCardStackView.rewind();
+    }
+
+    @Override
+    public void onCardDragging(Direction direction, float v) {
+
+    }
+
+    @Override
+    public void onCardSwiped(Direction direction) {
+        if(direction == Direction.Right){
+            Log.d("CardStackView", "onCardSwiped: like " + cardStackLayoutManager.getTopPosition());
+        }else if(direction == Direction.Left){
+            Log.d("CardStackView", "onCardSwiped: dislike " + cardStackLayoutManager.getTopPosition());
+        }
+    }
+
+    @Override
+    public void onCardRewound() {
+        Log.d("CardStackView", "onCardRewound: " + cardStackLayoutManager.getTopPosition());
+    }
+
+    @Override
+    public void onCardCanceled() {
+
+    }
+
+    @Override
+    public void onCardAppeared(View view, int i) {
+
+    }
+
+    @Override
+    public void onCardDisappeared(View view, int i) {
+
     }
 }

@@ -33,11 +33,21 @@
             app:tint="#FF7772"/>
 
         <ImageButton
+            android:id="@+id/home_rewind_button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginStart="15dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_replay_24dp"
+            />
+
+        <ImageButton
             android:id="@+id/home_like_button"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="45dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="6dp"
             android:scaleType="fitCenter"
