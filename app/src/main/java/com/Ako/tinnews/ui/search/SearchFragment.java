@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -82,6 +83,11 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        SearchNewsAdapter newsAdapter = new SearchNewsAdapter();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(requireContext(), 2);
+        binding.newsResultsRecyclerView.setLayoutManager(gridLayoutManager);
+        binding.newsResultsRecyclerView.setAdapter(newsAdapter);
+
         // set on query text listener
         binding.newsSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
@@ -108,6 +114,7 @@ public class SearchFragment extends Fragment {
                         newsResponse -> {
                             if(newsResponse != null){
                                 Log.d("SearchFragment", newsResponse.toString());
+                                newsAdapter.setArticles(newsResponse.articles);
                             }else{
                                 Log.d("SearchFragment: ", "null");
                             }
