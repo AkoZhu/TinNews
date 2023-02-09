@@ -51,23 +51,23 @@ public class MainActivity extends AppCompatActivity {
         // else newsResponseCallback.onFailure()
 
         // Use Retrofit.create(yourClass.class) to create your interface object
-        NewsApi api = RetrofitClient.newInstance().create(NewsApi.class);
-        // Call<NewsResponse>
-        api.getTopHeadlines("us").enqueue(new Callback<NewsResponse>() {
-            @Override
-            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
-                if(response.isSuccessful()){
-                    Log.d("getTopHeadLines", response.body().toString());
-                }else{
-                    Log.d("getTopHeadLines", response.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<NewsResponse> call, Throwable t) {
-                Log.d("getTopHeadLines", t.toString());
-            }
-        });
+//        NewsApi api = RetrofitClient.newInstance().create(NewsApi.class);
+//        // Call<NewsResponse>
+//        api.getTopHeadlines("us").enqueue(new Callback<NewsResponse>() {
+//            @Override
+//            public void onResponse(Call<NewsResponse> call, Response<NewsResponse> response) {
+//                if(response.isSuccessful()){
+//                    Log.d("getTopHeadLines", response.body().toString());
+//                }else{
+//                    Log.d("getTopHeadLines", response.toString());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<NewsResponse> call, Throwable t) {
+//                Log.d("getTopHeadLines", t.toString());
+//            }
+//        });
 
     }
 
