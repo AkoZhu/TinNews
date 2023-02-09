@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.Ako.tinnews.R;
+import com.Ako.tinnews.databinding.FragmentHomeBinding;
 import com.Ako.tinnews.repository.NewsRepository;
 import com.Ako.tinnews.repository.NewsViewModelFactory;
 
@@ -25,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel viewModel;
+
+    private FragmentHomeBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -70,7 +73,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
 
