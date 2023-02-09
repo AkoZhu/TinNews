@@ -12,11 +12,17 @@ import android.view.ViewGroup;
 
 import com.Ako.tinnews.R;
 import com.Ako.tinnews.databinding.FragmentHomeBinding;
+import com.Ako.tinnews.model.Article;
 import com.Ako.tinnews.repository.NewsRepository;
 import com.Ako.tinnews.repository.NewsViewModelFactory;
+import com.yuyakaido.android.cardstackview.CardStackLayoutManager;
+import com.yuyakaido.android.cardstackview.CardStackListener;
+import com.yuyakaido.android.cardstackview.StackFrom;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +34,10 @@ public class HomeFragment extends Fragment {
     private HomeViewModel viewModel;
 
     private FragmentHomeBinding binding;
+
+    private CardStackLayoutManager cardStackLayoutManager;
+
+    private List<Article> articles;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +92,14 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NotNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
+        // setup card stack view
+        CardSwipeAdapter cardSwipeAdapter = new CardSwipeAdapter();
+        // use the CardStackLayout
+        cardStackLayoutManager = new CardStackLayoutManager(requireContext());
+        cardStackLayoutManager.setStackFrom(StackFrom.Top);
+        binding.homeCardStackView.setLayoutManager(cardStackLayoutManager);
+        binding.homeCardStackView.setAdapter(cardSwipeAdapter);
+
         NewsRepository repository = new NewsRepository();
         viewModel = new ViewModelProvider(this, new NewsViewModelFactory(repository)).get(HomeViewModel.class);
         viewModel.setCountryInput("us");
@@ -91,6 +109,8 @@ public class HomeFragment extends Fragment {
                         getViewLifecycleOwner(),
                         newsResponse -> {
                             if(newsResponse != null){
+                                articles = newsResponse.articles;
+                                cardSwipeAdapter.setArticles(articles);
                                 Log.d("HomeFragment", newsResponse.toString());
                             }
                         }
