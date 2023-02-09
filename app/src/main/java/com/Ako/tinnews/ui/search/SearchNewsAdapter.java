@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.Ako.tinnews.R;
 import com.Ako.tinnews.databinding.SearchNewsItemBinding;
 import com.Ako.tinnews.model.Article;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.Se
     @NonNull
     @Override
     public SearchNewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // get the view from the layout inflater
+        // get the view from the layout inflater and create the ViewHolder based on it.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_news_item, parent, false);
         SearchNewsViewHolder viewHolder = new SearchNewsViewHolder(view);
         Log.d("SearchNewsAdapter", "onCreateViewHolder: " + viewHolder.toString());
@@ -54,8 +55,12 @@ public class SearchNewsAdapter extends RecyclerView.Adapter<SearchNewsAdapter.Se
 
     @Override
     public void onBindViewHolder(@NonNull SearchNewsViewHolder holder, int position){
+        // bind the data to the view
         Article article = articles.get(position);
         holder.itemTitleView.setText(article.title);
+        if(article.urlToImage != null){
+            Picasso.get().load(article.urlToImage).resize(200, 200).into(holder.itemImageView);
+        }
     }
 
     @Override
