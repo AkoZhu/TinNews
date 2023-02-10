@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.Ako.tinnews.R;
 import com.Ako.tinnews.databinding.FragmentDetailsBinding;
 import com.Ako.tinnews.model.Article;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -78,5 +79,8 @@ public class DetailsFragment extends Fragment {
         binding.detailsAuthorTextView.setText(article.author);
         binding.detailsDateTextView.setText(article.description);
         binding.detailsContentTextView.setText(article.content);
+        if(article.urlToImage != null) {
+            Picasso.get().load(article.urlToImage).into(binding.detailsImageView);
+        }
     }
 }
