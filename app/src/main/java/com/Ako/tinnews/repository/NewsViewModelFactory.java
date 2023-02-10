@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.Ako.tinnews.ui.home.HomeViewModel;
+import com.Ako.tinnews.ui.save.SaveViewModel;
 import com.Ako.tinnews.ui.search.SearchViewModel;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,12 +19,14 @@ public class NewsViewModelFactory implements ViewModelProvider.Factory {
 
     @NotNull
     @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass){
-        if(modelClass.isAssignableFrom(HomeViewModel.class)){
+    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+        if (modelClass.isAssignableFrom(HomeViewModel.class)) {
             return (T) new HomeViewModel(repository);
-        }else if(modelClass.isAssignableFrom(SearchViewModel.class)){
+        } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(repository);
-        }else{
+        } else if (modelClass.isAssignableFrom(SaveViewModel.class)) {
+            return (T) new SaveViewModel(repository);
+        } else {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }

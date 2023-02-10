@@ -13,6 +13,8 @@ import com.Ako.tinnews.model.NewsResponse;
 import com.Ako.tinnews.network.NewsApi;
 import com.Ako.tinnews.network.RetrofitClient;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -101,5 +103,15 @@ public class NewsRepository {
         protected void onPostExecute(Boolean success){
             liveData.setValue(success);
         }
+    }
+
+
+    public LiveData<List<Article>> getAllSavedArticles(){
+        return database.articleDao().getAllArticles();
+    }
+
+
+    public void deleteSavedArticle(Article article){
+        AsyncTask.execute(() -> database.articleDao().deleteArticle(article));
     }
 }
